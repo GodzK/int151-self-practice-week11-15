@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem 2: User Loader</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        #status { font-style: italic; color: gray; }
+        .error { color: red; font-weight: bold; }
+        ul { list-style-type: square; }
+    </style>
+</head>
+<body>
+
+    <!-- 
+        โจทย์ข้อที่ 2: User Loader with State
+        ----------------------------------
+        วัตถุประสงค์: ฝึก Async/Await, Fetch API และการจัดการ State UI
+        Flow: กดปุ่ม -> Loading -> Fetch -> Success/Fail
+    -->
+
+    <h2>2. User Loader</h2>
+
+    <button id="loadBtn">Load Users</button>
+    <p id="status"></p>
+    <ul id="userList"></ul>
+
+    <script>
+        /**
+         * SOLUTION
+         * ใช้ Module Pattern จัดการ Logic การโหลดข้อมูล
+         */
+        const UserLoader = (() => {
+            // DOM Elements
+            const btn = document.getElementById('loadBtn');
+            const list = document.getElementById('userList');
+            const statusParams = document.getElementById('status');
+            const API_URL = 'https://jsonplaceholder.typicode.com/users';
+
+            // ฟังก์ชันช่วยเคลียร์ข้อมูลเก่า
+            const clearData = () => {
+                list.innerHTML = '';
+                statusParams.textContent = '';
+                statusParams.className = '';
+            };
+
+            // ฟังก์ชันหลัก: Fetch Data
+            const fetchUsers = async () => {
+                // 1. Reset & Set Loading State
+                clearData();
+                statusParams.textContent = 'Loading...';
+                
+                
+                try {
+                  const data = await fetch(API_URL)
+                  // console.log(data);
+                  const users = await data.json()
+                  console.log(users);
+                  statusParams.textContent = 'Load Complete !!!'
+                  users.forEach(element => {
+                    const li = document.createElement("li")
+                    li.textContent = `${element.name} - ${element.email} `
+                    list.appendChild(li)
+                  });
+
+                } catch (error) {
+                    // 4. Error State
+                    console.error("Fetch error:", error);
+                    statusParams.textContent = 'Failed to Load';
+                    statusParams.classList.add('error');
+                }
+            };
+
+            // Setup
+            const init = () => {
+                btn.addEventListener('click', fetchUsers);
+            };
+
+            return { init };
+        })();
+
+        // Run
+        UserLoader.init();
+
+    </script>
+</body>
+</html>
