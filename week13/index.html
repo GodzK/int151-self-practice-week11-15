@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem 6: LocalStorage Todo</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        ul { padding-left: 0; }
+        li { list-style: none; padding: 5px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
+        li button { background: red; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <!-- 
+        โจทย์ข้อที่ 6: Persistent Todo List
+        ----------------------------------
+        Concepts: DOM + Arrays + LocalStorage
+        1. เพิ่ม Task ลงรายการและบันทึก
+        2. กด Refresh หน้าเว็บ ข้อมูลต้องไม่หาย
+        3. ลบ Task ได้ และอัปเดต LocalStorage
+    -->
+
+    <h2>6. LocalStorage Todo</h2>
+    <input id="taskInput" type="text" placeholder="Enter task...">
+    <button id="addBtn">Add</button>
+    <ul id="taskList"></ul>
+
+    <script>
+        const TodoApp = (() => {
+            // Cache DOM
+            const input = document.getElementById('taskInput');
+            const addBtn = document.getElementById('addBtn');
+            const list = document.getElementById('taskList');
+
+            // State: เก็บข้อมูลใน Array
+            let tasks = [];
+
+            // 1. Load Data: ดึงข้อมูลจาก LocalStorage ตอนเริ่มโปรแกรม
+            const loadTasks = () => {
+                const saved = localStorage.getItem('myTasks');
+                if (saved) {
+                    // JSON.parse แปลง string กลับเป็น array
+                    tasks = JSON.parse(saved);
+                    render();
+                }
+            };
+
+            // 2. Save Data: บันทึกข้อมูลลง LocalStorage
+            const saveTasks = () => {
+                // LocalStorage เก็บได้แต่ String จึงต้องใช้ JSON.stringify
+                localStorage.setItem('myTasks', JSON.stringify(tasks));
+            };
+
+            // 3. Render: วาด HTML จาก Array
+            const render = () => {
+                list.innerHTML = ''; // ล้างของเก่าก่อนวาดใหม่
+                tasks.forEach((task, index) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span>${task}</span>
+                        <button onclick="TodoApp.remove(${index})">Delete</button>
+                    `;
+                    list.appendChild(li);
+                });
+            };
+
+            // Function: เพิ่ม Task
+            const add = () => {
+                const val = input.value.trim();
+                if (!val) return;
+
+                tasks.push(val); // อัปเดต State
+                saveTasks();     // บันทึก
+                render();        // วาดหน้าจอใหม่
+                input.value = '';
+            };
+
+            // Function: ลบ Task (ต้องเปิดเป็น Public ให้ HTML เรียกใช้ได้)
+            const remove = (index) => {
+                tasks.splice(index, 1); // ลบออกจาก Array
+                saveTasks();
+                render();
+            };
+
+            const init = () => {
+                addBtn.addEventListener('click', add);
+                loadTasks(); // โหลดข้อมูลทันทีที่เปิดเว็บ
+            };
+
+            return { init, remove }; // expose 'remove' เพื่อให้ปุ่ม Delete เรียกใช้ได้
+        })();
+
+        TodoApp.init();
+    </script>
+</body>
+</html>

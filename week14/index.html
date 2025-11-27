@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem 4: Validation</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        div { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input { padding: 8px; width: 200px; }
+        #msg { font-weight: bold; min-height: 20px; }
+        
+        .valid { border: 2px solid green; }
+        .invalid { border: 2px solid red; }
+    </style>
+</head>
+<body>
+
+    <!-- 
+        โจทย์ข้อที่ 4: Form Validation (Real-time)
+        ----------------------------------
+        วัตถุประสงค์: Logic การตรวจสอบข้อมูล และ User Feedback
+        เงื่อนไข: Email ต้องมี "@" และ ".", Age ต้องเป็นเลข 1-120
+    -->
+
+    <h2>4. Real-time Validation</h2>
+
+    <div>
+        <label>Email:</label>
+        <input id="email" type="text" placeholder="user@example.com">
+    </div>
+    
+    <div>
+        <label>Age:</label>
+        <input id="age" type="number" placeholder="1-120">
+    </div>
+
+    <button id="submitBtn">Submit</button>
+    <p id="msg"></p>
+
+    <script>
+        /**
+         * SOLUTION
+         */
+        const emailInput = document.getElementById('email');
+        const ageInput = document.getElementById('age');
+        const msg = document.getElementById('msg');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Logic 1: Validate Email
+        function validateEmail(value) {
+            // เช็คว่ามี @ และ . (แบบพื้นฐานตามโจทย์)
+           if ((value.value.includes("@")) && (value.value.includes("."))) {
+            value.style.color = 'green'
+           }
+           else {
+            value.style.color = 'red'
+           }
+           
+        }
+
+        // Logic 2: Validate Age
+        function validateAge(value) {
+           if (Number(value.value)> 1 && Number(value.value)<= 120) {
+            value.style.color = 'green'
+           }
+           else{
+            value.style.color = 'red'
+           }
+        }
+
+        // ฟังก์ชันกลางสำหรับตรวจสอบและแสดงผล
+        function validateForm() {
+           validateEmail(emailInput)
+           validateAge(ageInput)
+        }
+
+        // Event Listeners: 'input' event จะทำงานทันทีที่พิมพ์
+        emailInput.addEventListener('input', validateForm);
+        ageInput.addEventListener('input', validateForm);
+
+        // Initial check (optional)
+        submitBtn.addEventListener('click',()=>{
+          if (emailInput.style.color === "green" && ageInput.style.color === "green" ){
+            alert("submit success")
+            emailInput.value = ''
+            ageInput.value = ''
+          }
+          else{
+            alert("submit unsuccess")
+          }
+        })
+        // validateForm();
+
+    </script>
+</body>
+</html>

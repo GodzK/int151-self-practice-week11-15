@@ -1,0 +1,5 @@
+I have learned the power of Event Delegation to optimize performance and write cleaner code. Before this, I might have attached an event listener to every single list item, which I now realize is inefficient, especially for large lists.
+
+Through this project, I learned about "Event Bubbling"—the concept that an event triggered on a child element bubbles up to its parent. I learned to attach a single listener to the parent <ul> element and use the event.target property to determine exactly which child was clicked.
+
+I also mastered the usage of .closest('li') and dataset attributes (data-page). This ensures that even if I click on a nested element inside the list item (like an icon or text span), the code still correctly identifies the parent list item. This technique allows me to handle dynamic content efficiently, as new items added to the list will automatically inherit the behavior without needing new listeners.

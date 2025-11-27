@@ -1,0 +1,5 @@
+I have learned how to implement real-time Form Validation using DOM events and logic separation. This project moved me away from validating only when the submit button is clicked, to providing immediate feedback as the user types using the input event.
+
+I learned to separate my validation logic into distinct helper functions like validateEmail and validateAge. This modular approach makes the code reusable and easier to test. I also practiced manipulating CSS classes (.valid and .invalid) via JavaScript to provide visual cues (green or red borders) to the user.
+
+Additionally, I learned how to control the state of the submit button based on the overall validity of the form. This ensures that invalid data cannot be submitted, which is a critical aspect of secure and robust web application development.

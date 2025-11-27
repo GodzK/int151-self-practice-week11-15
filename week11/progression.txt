@@ -1,0 +1,5 @@
+I have learned how to build a Time Reminder System using the Module Pattern in JavaScript. This project taught me how to structure my code more professionally by encapsulating logic and variables within a single object, preventing global scope pollution.
+
+Specifically, I learned how to manipaulate the Date object effectively. I moved beyond simple string manipulation and learned to create new Date instances, set specific hours and minutes, and calculate the difference between timestamps in milliseconds. I also practiced converting those milliseconds into human-readable minutes.
+
+Furthermore, I reinforced my understanding of DOM manipulation and event handling. I learned to create a setup function to bind events cleanly and a separate displayResult function to handle the UI logic based on the calculated time difference. This separation of concerns made my code easier to read and debug.

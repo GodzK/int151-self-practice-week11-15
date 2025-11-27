@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem 1: Time Reminder</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        input, button { padding: 8px; margin: 5px; }
+        #result { font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <!-- 
+        โจทย์ข้อที่ 1: Time Reminder System
+        ----------------------------------
+        วัตถุประสงค์: ฝึกการใช้ Date Object และ Module Pattern
+        Input: เวลา (Time String)
+        Output: จำนวนนาทีที่เหลือ หรือ จำนวนนาทีที่ผ่านมาแล้ว
+    -->
+    <h2>1. Time Reminder System</h2>
+    
+    <input id="targetTime" type="time">
+    <button id="startBtn">Start Calculation</button>
+    <p id="result"></p>
+
+    <script>
+        const TimeReminder = (() => {
+            // Cache DOM Elements (เก็บตัวแปร DOM ไว้ใช้งาน)
+            const timeInput = document.getElementById('targetTime');
+            const resultDisplay = document.getElementById('result');
+            const startBtn = document.getElementById('startBtn');
+
+            
+            // ฟังก์ชันย่อย 1: คำนวณความต่างของเวลา
+            const calculateDifference = () => {
+                // input มันได้มาเป็น hr:min มนไม่ได้มาเป็น date format
+                const inpVal = timeInput.value;
+                console.log(inpVal);
+                if (!inpVal) {
+                    return "กรุณาใส่เวลา"
+                }
+                const now = new Date()
+                // จัด inp => date formatเพื่อมาลบกับ now ที่เป็น New date
+                const [hours , minute] = inpVal.split(":")
+                const target = new Date()
+                target.setHours(hours)
+                target.setMinutes(minute)
+                target.getSeconds(0)
+                console.log(target);
+
+                const diff = target - now;
+                console.log(diff);  
+                // millisec / 10000 => sec / 60 minute
+                const diffMinutes = Math.floor(diff / 1000 / 60)
+                const diffHours = diffMinutes / 60
+                return diffMinutes
+
+            };
+
+            // ฟังก์ชันย่อย 2: แสดงผลลัพธ์ตามเงื่อนไข
+            const displayResult = () => {
+                const diff = calculateDifference()
+                console.log(`diff ขณะนี้`,diff);
+                if (typeof diff === 'string') {
+                    resultDisplay.textContent = diff;
+                    resultDisplay.style.color = 'orange';
+                    return;
+                }
+                if(diff < 0){
+                   resultDisplay.textContent = `เวลานี้ผ่านมาแล้ว ${Math.abs(diff)} นาที`;
+                    resultDisplay.style.color = 'red';
+                }
+                else {
+                    resultDisplay.textContent = `เหลืออีก ${diff} นาที`;
+                    resultDisplay.style.color = 'green';
+                }
+            };
+
+            // ฟังก์ชันย่อย 3: Setup Event Listener
+            const setup = () => {
+                startBtn.addEventListener('click', displayResult);
+            };
+
+            // Public API: เปิดเผยเฉพาะสิ่งที่จำเป็น
+            return {
+                init: setup
+            };
+        })();
+
+        // เรียกใช้งานโปรแกรม
+        TimeReminder.init();
+
+    </script>
+</body>
+</html>
