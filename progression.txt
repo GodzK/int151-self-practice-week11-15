@@ -1,0 +1,5 @@
+I have learned the concept of "Debouncing" through building an Autosave Draft System. This was a significant step up in understanding how to manage code execution timing relative to user actions.
+
+I learned that without debouncing, code might run too frequently (e.g., saving on every single keystroke), which is inefficient. By using setTimeout and clearTimeout, I learned how to "reset the clock" every time the user types. This ensures the save function only triggers after the user has stopped typing for a specific duration.
+
+This project gave me a deeper appreciation for the asynchronous nature of JavaScript and how to use timers to improve User Experience (UX). It taught me that sometimes, the best way to handle an event is to wait a moment before reacting.
